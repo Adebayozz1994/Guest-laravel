@@ -2,16 +2,17 @@
 
 use App\Http\Controllers\AdminAuth\AuthenticatedSessionController;
 use App\Http\Controllers\AdminAuth\RegisteredAdminController;
+use App\Http\Middleware\checkAdminISHeadAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
     Route::get('register', [RegisteredAdminController::class, 'create'])
-                ->name('register');
+                ->name('admin.register')->middleware(checkAdminISHeadAdmin::class);
 
-    Route::post('register', [RegisteredAdminController::class, 'store']);
+    Route::post('register', [RegisteredAdminController::class, 'store'])->middleware(checkAdminISHeadAdmin::class);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
+                ->name('admin.login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
@@ -28,7 +29,7 @@ Route::prefix('admin')->group(function () {
     //             ->name('password.store');
 });
 
-Route::prefix('admin')->middleware('auth')->group(function () {
+Route::prefix('admin')->middleware(checkAdminISHeadAdmin::class)->group(function () {
     // Route::get('verify-email', EmailVerificationPromptController::class)
     //             ->name('verification.notice');
 
@@ -48,5 +49,5 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
+                ->name('admin.logout');
 });
