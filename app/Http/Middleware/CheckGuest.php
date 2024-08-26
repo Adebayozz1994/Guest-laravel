@@ -19,6 +19,6 @@ class CheckGuest
         if (Auth::guard('admin')->check()) { //checking if admin is authenticated
             return $next($request);
         }
-        return redirect()->route('/admin/dashboard');
+        return redirect()->route('admin.dashboard');
     }
 }

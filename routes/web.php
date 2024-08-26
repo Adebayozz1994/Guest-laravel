@@ -22,6 +22,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware('admin')->group(function () {
+    Route::get('/profile', [CheckGuest::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [CheckGuest::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [CheckGuest::class, 'destroy'])->name('profile.destroy');
+});
+
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 

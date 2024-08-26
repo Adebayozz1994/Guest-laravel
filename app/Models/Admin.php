@@ -19,10 +19,8 @@ class Admin extends Authenticatable
         'password',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-        ];
-    }
+   protected $casts = [
+    'password' => 'hashed',
+];
+
 }
