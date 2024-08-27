@@ -22,10 +22,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('admin')->group(function () {
-    Route::get('/profile', [CheckGuest::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [CheckGuest::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [CheckGuest::class, 'destroy'])->name('profile.destroy');
+Route::prefix('admin')->middleware(CheckGuest::class)->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'updateAdmin'])->name('admin.profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
 });
 
 require __DIR__.'/auth.php';
