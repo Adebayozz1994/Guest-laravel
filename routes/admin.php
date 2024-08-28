@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminAuth\EmailVerificationPromptController;
 use App\Http\Controllers\AdminAuth\PasswordController;
 use App\Http\Controllers\AdminAuth\VerifyEmailController;
 use App\Http\Middleware\checkAdminISHeadAdmin;
+use App\Http\Middleware\CheckGuest;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -36,7 +37,7 @@ Route::prefix('admin')->group(function () {
                 ->name('password.store');
 });
 
-Route::prefix('admin')->middleware(checkAdminISHeadAdmin::class)->group(function () {
+Route::prefix('admin')->middleware(CheckGuest::class)->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 
@@ -53,7 +54,7 @@ Route::prefix('admin')->middleware(checkAdminISHeadAdmin::class)->group(function
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::put('password', [PasswordController::class, 'updateAdminPassword'])->name('admin.password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('admin.logout');

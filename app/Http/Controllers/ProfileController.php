@@ -45,7 +45,7 @@ class ProfileController extends Controller
             'email' => $request->email
         ]);
         if($update){
-            return redirect()->route('admin.profile.edit')->with('success', 'Profile updated successfully');
+            return redirect()->route('admin.profile.edit')->with('status', 'Profile updated successfully');
         }else{
             return redirect()->route('admin.profile.edit')->with('error', 'Profile update failed');
         }
