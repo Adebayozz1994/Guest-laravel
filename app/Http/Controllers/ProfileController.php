@@ -33,20 +33,21 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-
+    
      public function updateAdmin(Request $request) : RedirectResponse{
         $validate = Validator::make ($request->all(),[
             'name' => ['required', 'max: 255'],
-            'email' => ['required','lowercase', 'email', 'unique:'.Admin::class]
+            'email' => ['required|email','lowercase', 'email', 'unique:'.Admin::class]
         ]);
-        $update = Admin::where('email', $request->email)->update([
+        $authenticated = Auth::guard('admin')->user();
+        $update = Admin::where('id', $authenticated->id)->update([
             'name' => $request->name,
             'email' => $request->email
         ]);
         if($update){
-            return redirect::route('admin.profile.edit')->with('success', 'Profile updated successfully');
+            return redirect()->route('admin.profile.edit')->with('success', 'Profile updated successfully');
         }else{
-            return redirect::route('admin.profile.edit')->with('error', 'Profile update failed');
+            return redirect()->route('admin.profile.edit')->with('error', 'Profile update failed');
         }
      }
     public function update(ProfileUpdateRequest $request): RedirectResponse
