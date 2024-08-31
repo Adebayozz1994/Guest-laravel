@@ -17,7 +17,7 @@ Route::prefix('admin')->group(function () {
     Route::get('register', [RegisteredAdminController::class, 'create'])
                 ->name('admin.register')->middleware(checkAdminISHeadAdmin::class);
 
-    Route::post('register', [RegisteredAdminController::class, 'store'])->middleware(checkAdminISHeadAdmin::class);
+    Route::post('register', [RegisteredAdminController::class, 'store']);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('admin.login');
@@ -35,9 +35,10 @@ Route::prefix('admin')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
+    Route::post('get', [AuthenticatedSessionController::class, 'getAdmin']);
 });
 
-Route::prefix('admin')->middleware(CheckGuest::class)->group(function () {
+Route::prefix('admin')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 
